@@ -1,15 +1,25 @@
 <template>
   <div class="container-fluid">
     <b-navbar toggleable="lg" type="light" variant="light">
-      <nuxt-link class="navbar-brand" to="/">JWT-Auth</nuxt-link>
+      <nuxt-link class="navbar-brand" to="/">JWT Project</nuxt-link>
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
-          <li class="nav-item">
-            <nuxt-link v-if="authenticated" class="nav-link" to="/dashboard"
-              >Dashboard</nuxt-link
-            >
-          </li>
+          <template v-if="authenticated">
+            <li class="nav-item">
+              <nuxt-link class="nav-link" to="/dashboard">Dashboard</nuxt-link>
+            </li>
+            <li>
+              <nuxt-link class="nav-link" to="/movies/trending"
+                >Trending Movies</nuxt-link
+              >
+            </li>
+            <li class="nav-item">
+              <nuxt-link class="nav-link" to="/movies/popular"
+                >Popular Movies</nuxt-link
+              >
+            </li>
+          </template>
         </b-navbar-nav>
         <!-- Right aligned nav items -->
         <b-navbar-nav class="ml-auto">

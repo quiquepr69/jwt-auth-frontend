@@ -1,6 +1,6 @@
 <template>
-  <div class="container">
-    <h1>Welcome to your dashboard {{ user.name }}</h1>
+  <div class="container-fluid">
+    <h1 class="text-center">Welcome to your dashboard {{ user.name }}</h1>
   </div>
 </template>
 
