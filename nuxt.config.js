@@ -7,7 +7,7 @@ export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
  
   head: {
-    title: 'jwt-auth',
+    title: 'jwt-project',
     htmlAttrs: {
       lang: 'en',
     },
@@ -22,7 +22,8 @@ export default {
 
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
-    
+    // SCSS file in the project
+    '@/assets/css/main.scss'
   ],
   
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
