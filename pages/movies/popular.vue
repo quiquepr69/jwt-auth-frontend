@@ -121,7 +121,7 @@
             <div class="rating">{{ movie.vote_average }}</div>
             <img
               id="show-btn"
-              :src="`https://image.tmdb.org/t/p/w500/${movie.poster_path}`"
+              :src="`https://image.tmdb.org/t/p/original/${movie.poster_path}`"
               class="card-img-top cursor-pointer"
               :alt="movie.title + ' ' + 'image'"
               :title="movie.title"
@@ -155,7 +155,7 @@
             </template>
             <div class="modal-image text-center mb-3">
               <img
-                :src="`https://image.tmdb.org/t/p/w500/${movie.poster_path}`"
+                :src="`https://image.tmdb.org/t/p/original/${movie.poster_path}`"
                 :alt="movie.title + ' ' + 'image'"
                 class="w-50"
               />
