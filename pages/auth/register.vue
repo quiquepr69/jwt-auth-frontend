@@ -13,7 +13,7 @@
 
                   <form @submit.prevent="register">
                     <div class="form-outline mb-4">
-                      <label class="form-label" for="userName">Your Name</label>
+                      <label class="form-label w-100 text-center" for="userName">Your Name</label>
                       <input
                         id="userName"
                         v-model="form.name"
@@ -28,7 +28,7 @@
                     </div>
 
                     <div class="form-outline mb-4">
-                      <label class="form-label" for="userEmail"
+                      <label class="form-label w-100 text-center" for="userEmail"
                         >Your Email</label
                       >
                       <input
@@ -45,7 +45,7 @@
                     </div>
 
                     <div class="form-outline mb-4">
-                      <label class="form-label" for="userPassword1"
+                      <label class="form-label w-100 text-center" for="userPassword1"
                         >Password</label
                       >
                       <input
