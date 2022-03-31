@@ -2,7 +2,7 @@
   <div class="container-fluid">
     <b-row>
       <b-col>
-        <h1 class="h3 text-center">Trending Movies</h1>
+        <h1 class="h3 text-center mt-4">Trending Movies</h1>
         <b-nav-form class="">
           <b-form-input
             v-model.lazy="searchInput"
@@ -29,10 +29,10 @@
       </b-col>
     </b-row>
     <!-- movie cards -->
-    <b-container v-if="isSearch" fluid class="mt-5 p-0">
+    <b-container v-if="!isSearch" fluid class="mt-5 p-0">
       <b-row>
         <div
-          v-for="(movies, index) in trendingMovies.data.results"
+          v-for="(movies, index) in trendingMovies.results"
           id="trendingMovies"
           :key="index"
           class="col-lg-3 mb-4"
@@ -48,7 +48,10 @@
               @click="$bvModal.show('bv-modal' + movies.id)"
             />
             <div class="card-body bg-info text-white">
-              <h5 class="card-title">{{ movies.title }}</h5>
+              <h6 class="card-title">
+                {{ movies.title.slice(0, 35)
+                }}<span v-if="movies.length > 35">...</span>
+              </h6>
               <div class="card-text">
                 <small class="text-white d-block">
                   Audience: {{ movies.adult ? 'false' : 'All audiences' }}
@@ -58,6 +61,15 @@
                 >
                 <small class="text-white d-block text-uppercase">
                   Language: {{ movies.original_language }}
+                </small>
+                <small class="text-white d-block">
+                  Genres:
+                  <span
+                    v-for="genres in getMovieGenre(movies.genre_ids)"
+                    :key="genres.id"
+                  >
+                    {{ genres.name }},
+                  </span>
                 </small>
               </div>
             </div>
@@ -93,8 +105,8 @@
         </div>
       </b-row>
       <b-pagination
-        v-model="trendingMovies.data.page"
-        :total-rows="trendingMovies.data.total_results"
+        v-model="trendingMovies.page"
+        :total-rows="trendingMovies.total_results"
         aria-controls="trendingMovies"
         hide-goto-end-buttons
         size="sm"
@@ -126,7 +138,10 @@
               @click="$bvModal.show('bv-modal' + movie.id)"
             />
             <div class="card-body bg-info text-white">
-              <h5 class="card-title">{{ movie.title }}</h5>
+              <h6 class="card-title">
+                {{ movie.title.slice(0, 35)
+                }}<span v-if="movie.length > 35">...</span>
+              </h6>
               <div class="card-text">
                 <small class="text-white d-block">
                   Audience: {{ movie.adult ? 'false' : 'All audiences' }}
@@ -136,6 +151,15 @@
                 >
                 <small class="text-white d-block text-uppercase">
                   Language: {{ movie.original_language }}
+                </small>
+                <small class="text-white d-block">
+                  Genres:
+                  <span
+                    v-for="genres in getMovieGenre(movie.genre_ids)"
+                    :key="genres.id"
+                  >
+                    {{ genres.name }},
+                  </span>
                 </small>
               </div>
             </div>
@@ -180,10 +204,10 @@ export default {
   name: 'TrendingMovies',
   middleware: 'auth',
   async asyncData({ app, query }) {
-    const trendingMovies = await app.$axios.get(
-      `/api/movie/trending?page=${query.page ? query.page : 1}`
-    )
-    const movieGenre = await app.$axios.get('/api/movie/genre/')
+    const [trendingMovies, movieGenre] = await Promise.all([
+      app.$axios.$get(`/api/movie/trending?page=${query.page ? query.page : 1}`),
+      app.$axios.$get('/api/movie/genre/')
+    ])
     return {
       trendingMovies,
       movieGenre,
@@ -193,20 +217,25 @@ export default {
     return {
       searchedMovies: [],
       searchInput: '',
-      isSearch: true,
+      isSearch: false,
     }
   },
   computed: {},
-  watchQuery: ['page'],
+  watchQuery: ['page', 'query'],
   methods: {
     async searchMovies() {
-      this.isSearch = false
+      this.isSearch = true
       const data = this.$axios.get(
-        `/api/movie/search?language=en-US&query=${this.searchInput}`
+        `/api/movie/search?language=en-US&include_adult=false&query=${this.searchInput}`
       )
       const result = await data
       result.data.results.forEach((movie) => {
         this.searchedMovies.push(movie)
+      })
+      this.$router.push({
+        query: {
+          query: this.searchInput,
+        },
       })
     },
     changePage(pageNumber) {
@@ -219,7 +248,13 @@ export default {
     clearSearch() {
       this.searchInput = ''
       this.searchedMovies = []
-      this.isSearch = true
+      this.isSearch = false
+    },
+    getMovieGenre(ids) {
+      const genreResults = this.movieGenre.genres.filter((application) => {
+        return ids.includes(application.id)
+      })
+      return genreResults
     },
   },
 }

@@ -10,7 +10,7 @@
                   <h2 class="text-uppercase text-center mb-5">Login</h2>
                   <form @submit.prevent="login">
                     <div class="form-outline mb-4">
-                      <label class="form-label" for="userEmail"
+                      <label class="form-label w-100 text-center" for="userEmail"
                         >Your Email</label
                       >
                       <input
@@ -26,7 +26,7 @@
                     </div>
 
                     <div class="form-outline mb-4">
-                      <label class="form-label" for="userPassword1"
+                      <label class="form-label w-100 text-center" for="userPassword1"
                         >Password</label
                       >
                       <input
